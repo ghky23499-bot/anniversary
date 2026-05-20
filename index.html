@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>我们的一周年</title>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=ZCOOL+KuaiLe&family=Noto+Serif+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Serif SC', 'STSong', 'SimSun', 'PingFang SC', 'Microsoft YaHei', serif;
+  background: #faf5f0;
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Slide base */
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: scale(0.96);
+  padding: 40px 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* Cover Slide */
+.cover {
+  background: linear-gradient(160deg, #fce4e4 0%, #f9d8d8 30%, #fce8e0 60%, #fef5f0 100%);
+}
+
+.cover-hearts {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.heart-float {
+  position: absolute;
+  font-size: 24px;
+  animation: floatUp linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-10vh) scale(1.2) rotate(720deg); opacity: 0; }
+}
+
+.cover-title {
+  font-family: 'ZCOOL XiaoWei', 'STKaiti', 'KaiTi', serif;
+  font-size: 42px;
+  color: #d4456a;
+  text-align: center;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgba(212,69,106,0.15);
+  animation: titleShine 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleShine {
+  0% { text-shadow: 0 2px 8px rgba(212,69,106,0.15); }
+  100% { text-shadow: 0 4px 20px rgba(212,69,106,0.35); }
+}
+
+.cover-subtitle {
+  font-size: 18px;
+  color: #b07a6e;
+  margin-top: 16px;
+  z-index: 2;
+  letter-spacing: 4px;
+}
+
+.cover-hint {
+  position: absolute;
+  bottom: 60px;
+  font-size: 14px;
+  color: #c9a99a;
+  z-index: 2;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-6px); }
+}
+
+/* Part 1 - Text summary */
+.part1 {
+  background: linear-gradient(180deg, #fef5f0 0%, #fdf0e8 50%, #fef5f0 100%);
+}
+
+.part1-card {
+  max-width: 360px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 20px;
+  padding: 36px 28px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  border: 1px solid rgba(232,180,170,0.3);
+}
+
+.part1-card p {
+  font-size: 17px;
+  line-height: 2;
+  color: #5a4a3a;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* Part 2 - Date memories */
+.part2 {
+  background: linear-gradient(180deg, #fef8f5 0%, #fdf0f0 50%, #fef8f5 100%);
+}
+
+.part2-date {
+  font-family: 'ZCOOL KuaiLe', 'YouYuan', '幼圆', cursive;
+  font-size: 36px;
+  color: #d4456a;
+  margin-bottom: 32px;
+  letter-spacing: 2px;
+}
+
+.part2-text {
+  font-family: 'ZCOOL KuaiLe', 'YouYuan', '幼圆', cursive;
+  font-size: 22px;
+  color: #6b5544;
+  text-align: center;
+  line-height: 1.8;
+  max-width: 300px;
+}
+
+.part2-divider {
+  width: 50px;
+  height: 2px;
+  background: #e8b4aa;
+  margin: 20px 0;
+  border-radius: 1px;
+}
+
+/* Part 3 - Photo pages */
+.part3 {
+  background: linear-gradient(180deg, #fef8f3 0%, #faf0e8 100%);
+  padding: 20px 24px;
+}
+
+.part3-frame {
+  flex: 0 0 63%;
+  width: 92%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.part3-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: opacity 0.8s ease;
+}
+
+.part3-caption {
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 8px 20px 0;
+}
+
+.part3-caption p {
+  font-family: 'ZCOOL KuaiLe', 'YouYuan', '幼圆', cursive;
+  font-size: 20px;
+  color: #6b5544;
+  line-height: 1.6;
+}
+
+.part3-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.part3-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #dcc8c0;
+  transition: all 0.3s ease;
+}
+
+.part3-dot.active {
+  background: #d4456a;
+  transform: scale(1.4);
+}
+
+/* Part 4 - Checklist */
+.part4 {
+  background: linear-gradient(180deg, #fdf5f0 0%, #fef8f5 100%);
+  padding: 40px 28px;
+}
+
+.part4-title {
+  font-family: 'ZCOOL XiaoWei', 'STKaiti', 'KaiTi', serif;
+  font-size: 28px;
+  color: #d4456a;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.part4-list {
+  list-style: none;
+  width: 100%;
+  max-width: 340px;
+}
+
+.part4-list li {
+  font-size: 16px;
+  color: #5a4a3a;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(232,180,170,0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+}
+
+.part4-check {
+  color: #d4456a;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.part4-box {
+  color: #b0a098;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* Part 5 - Final message */
+.part5 {
+  background: linear-gradient(180deg, #fef5f0 0%, #fce8e0 40%, #fef5f0 100%);
+}
+
+.part5-card {
+  max-width: 360px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 20px;
+  padding: 32px 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+}
+
+.part5-card p {
+  font-size: 16px;
+  line-height: 2.1;
+  color: #5a4a3a;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.part5-sign {
+  font-family: 'ZCOOL KuaiLe', 'YouYuan', '幼圆', cursive;
+  font-size: 20px;
+  color: #d4456a;
+  margin-top: 20px;
+  text-align: right;
+}
+
+/* Part 6 - Ending Cover */
+.ending {
+  background: linear-gradient(160deg, #fce4e4 0%, #f9d8d8 30%, #fce8e0 60%, #fef5f0 100%);
+}
+
+.ending-title {
+  font-family: 'ZCOOL XiaoWei', 'STKaiti', 'KaiTi', serif;
+  font-size: 36px;
+  color: #d4456a;
+  text-align: center;
+  z-index: 2;
+}
+
+.ending-subtitle {
+  font-size: 16px;
+  color: #b07a6e;
+  margin-top: 12px;
+  z-index: 2;
+  letter-spacing: 3px;
+}
+
+/* Page indicator */
+.page-indicator {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  font-size: 12px;
+  color: #c9a99a;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Swipe hint animation */
+.swipe-hint {
+  position: absolute;
+  bottom: 50px;
+  font-size: 14px;
+  color: #c9a99a;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Responsive */
+@media (max-width: 380px) {
+  .cover-title { font-size: 34px; }
+  .part2-date { font-size: 30px; }
+  .part2-text { font-size: 19px; }
+  .part4-title { font-size: 24px; }
+  .ending-title { font-size: 30px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- Slide 0: Cover -->
+  <div class="slide cover active" data-index="0">
+    <div class="cover-hearts" id="heartsContainer"></div>
+    <div class="cover-title">我们的一周年</div>
+    <div class="cover-subtitle">2025.5.26 — 2026.5.26</div>
+    <div class="cover-hint">&#9825; 点击任意处开始 &#9825;</div>
+  </div>
+
+  <!-- Slide 1: Part 1 -->
+  <div class="slide part1" data-index="1">
+    <div class="part1-card">
+      <p>三百多天前，我们相遇、相知、相爱。<br>这一年的时光里，有你陪伴的每一天都闪闪发光。<br>从最初的悸动到如今的默契，<br>我们一起经历了太多美好的第一次。<br>感谢你出现在我的生命里，<br>让我知道被爱是什么样的感觉。<br>这一年很短，短到每一个瞬间都清晰如昨；<br>这一年很长，长到我已经无法想象没有你的日子。<br>一周年快乐，我的宝贝。</p>
+    </div>
+  </div>
+
+  <!-- Slide 2-8: Part 2 - Date memories -->
+  <div class="slide part2" data-index="2">
+    <div class="part2-date">2025.5.26</div>
+    <div class="part2-divider"></div>
+    <div class="part2-text">这一天，我们在一起了</div>
+  </div>
+
+  <div class="slide part2" data-index="3">
+    <div class="part2-date">2025.5.28</div>
+    <div class="part2-divider"></div>
+    <div class="part2-text">第一次牵手、抱抱、亲亲</div>
+  </div>
+
+  <div class="slide part2" data-index="4">
+    <div class="part2-date">2025.6.26</div>
+    <div class="part2-divider"></div>
+    <div class="part2-text">换上情头咯</div>
+  </div>
+
+  <div class="slide part2" data-index="5">
+    <div class="part2-date">2025.7.1</div>
+    <div class="part2-divider"></div>
+    <div class="part2-text">第一次一起看电影&#127916;</div>
+  </div>
+
+  <div class="slide part2" data-index="6">
+    <div class="part2-date">2025.7.8</div>
+    <div class="part2-divider"></div>
+    <div class="part2-text">第一次一起去KTV</div>
+  </div>
+
+  <div class="slide part2" data-index="7">
+    <div class="part2-date">2026.2.21</div>
+    <div class="part2-divider"></div>
+    <div class="part2-text">第一次两人旅行<br>韩国gogogo</div>
+  </div>
+
+  <div class="slide part2" data-index="8">
+    <div class="part2-date">2026.5.26</div>
+    <div class="part2-divider"></div>
+    <div class="part2-text">一周年啦！&#128150;</div>
+  </div>
+
+  <!-- Slide 9-12: Part 3 - Photo pages -->
+  <div class="slide part3" data-index="9" data-photos="p1">
+    <div class="part3-frame" id="frame9">
+      <img src="" alt="" id="img9">
+    </div>
+    <div class="part3-caption">
+      <p>这一年，一起约会！</p>
+      <div class="part3-dots" id="dots9"></div>
+    </div>
+  </div>
+
+  <div class="slide part3" data-index="10" data-photos="p2">
+    <div class="part3-frame" id="frame10">
+      <img src="" alt="" id="img10">
+    </div>
+    <div class="part3-caption">
+      <p>jiojio，可爱捏</p>
+      <div class="part3-dots" id="dots10"></div>
+    </div>
+  </div>
+
+  <div class="slide part3" data-index="11" data-photos="p3">
+    <div class="part3-frame" id="frame11">
+      <img src="" alt="" id="img11">
+    </div>
+    <div class="part3-caption">
+      <p>这一年，我们吃吃吃吃吃吃</p>
+      <div class="part3-dots" id="dots11"></div>
+    </div>
+  </div>
+
+  <div class="slide part3" data-index="12" data-photos="p4">
+    <div class="part3-frame" id="frame12">
+      <img src="" alt="" id="img12">
+    </div>
+    <div class="part3-caption">
+      <p>韩国之旅，开心&#129392;</p>
+      <div class="part3-dots" id="dots12"></div>
+    </div>
+  </div>
+
+  <!-- Slide 13-14: Part 4 - Checklist -->
+  <div class="slide part4" data-index="13">
+    <div class="part4-title">这一年，我们一起完成了</div>
+    <ul class="part4-list">
+      <li><span class="part4-check">&#10003;</span> 一起过生日</li>
+      <li><span class="part4-check">&#10003;</span> 一起去旅行</li>
+      <li><span class="part4-check">&#10003;</span> 一起看电影</li>
+      <li><span class="part4-check">&#10003;</span> 一起去海边</li>
+      <li><span class="part4-check">&#10003;</span> 一起庆祝纪念日</li>
+      <li><span class="part4-check">&#10003;</span> 一起换情侣头像</li>
+      <li><span class="part4-check">&#10003;</span> 一起去K歌</li>
+      <li><span class="part4-check">&#10003;</span> 一起玩五子棋</li>
+      <li><span class="part4-check">&#10003;</span> 一起吃烤肉</li>
+      <li><span class="part4-check">&#10003;</span> 相互送花</li>
+      <li><span class="part4-check">&#10003;</span> 吵架</li>
+      <li><span class="part4-check">&#10003;</span> 一起爬山</li>
+      <li><span class="part4-check">&#10003;</span> 一起逛超市</li>
+      <li><span class="part4-check">&#10003;</span> 一起去公园散步</li>
+    </ul>
+  </div>
+
+  <div class="slide part4" data-index="14">
+    <div class="part4-title">以后，我们还要</div>
+    <ul class="part4-list">
+      <li><span class="part4-box">&#9744;</span> 一起去游乐园</li>
+      <li><span class="part4-box">&#9744;</span> 一起放风筝</li>
+      <li><span class="part4-box">&#9744;</span> 做一次蛋糕甜点</li>
+      <li><span class="part4-box">&#9744;</span> 拍情侣写真</li>
+      <li><span class="part4-box">&#9744;</span> 一起锻炼身体</li>
+      <li><span class="part4-box">&#9744;</span> 周末泡温泉</li>
+      <li><span class="part4-box">&#9744;</span> 去海底世界</li>
+      <li><span class="part4-box">&#9744;</span> 坐摩天轮</li>
+      <li><span class="part4-box">&#9744;</span> 一起抓娃娃</li>
+      <li><span class="part4-box">&#9744;</span> 坐过山车</li>
+      <li><span class="part4-box">&#9744;</span> 午夜一起看恐怖片</li>
+      <li><span class="part4-box">&#9744;</span> 逛动物园看可爱动物</li>
+      <li><span class="part4-box">&#9744;</span> 一起滑雪</li>
+      <li><span class="part4-box">&#9744;</span> 为对方按摩一次</li>
+      <li><span class="part4-box">&#9744;</span> 一起做饭</li>
+      <li><span class="part4-box">&#9744;</span> 一起白头偕老</li>
+    </ul>
+  </div>
+
+  <!-- Slide 15: Part 5 -->
+  <div class="slide part5" data-index="15">
+    <div class="part5-card">
+      <p>转眼我们已经在一起整整一年了。<br>回想这三百多天，发现喜欢从来不是一时的新鲜感，<br>而是藏在心底的温柔，<br>是困境时的陪伴与包容，<br>是三百多个日夜的坚定的选择。<br><br>这一年里，我们一起看过风景、熬过疲惫、<br>甜蜜过、争吵过，<br>分享过琐碎的日常，也包容过彼此的小情绪。<br><br>感谢你，让我变得更温柔、更坚定。<br>无论开心或是低落，<br>进入聊天框，亦或是拉上你的手，<br>心情总会明媚起来。<br><br>谢谢宝宝，陪我走过一年的春夏秋冬，<br>一周年的故事只是开始，<br>我想在之后的每一年继续陪伴你，<br>坚定选择你，<br>未来所有的美好和温柔，愿我们一同奔赴。<br><br>爱你，宝宝！</p>
+      <div class="part5-sign">— 你的宝贝</div>
+    </div>
+  </div>
+
+  <!-- Slide 16: Part 6 - Ending -->
+  <div class="slide ending" data-index="16">
+    <div class="cover-hearts" id="endingHearts"></div>
+    <div class="ending-title">我们的故事<br>未完待续...</div>
+    <div class="ending-subtitle">&#9825; 爱你，不止一周年 &#9825;</div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('.slide');
+  var current = 0;
+  var total = slides.length;
+  var carouselTimers = {};
+  var isTransitioning = false;
+
+  // Photo data
+  var photoData = {
+    p1: [
+      'photos/p1/微信图片_20260520085831_305_18.jpg',
+      'photos/p1/微信图片_20260520085838_306_18.jpg',
+      'photos/p1/微信图片_20260520085839_307_18.jpg',
+      'photos/p1/微信图片_20260520085842_308_18.jpg',
+      'photos/p1/微信图片_20260520085844_309_18.jpg',
+      'photos/p1/微信图片_20260520085846_310_18.jpg',
+      'photos/p1/微信图片_20260520085847_311_18.jpg',
+      'photos/p1/微信图片_20260520085849_312_18.jpg',
+      'photos/p1/微信图片_20260520085851_313_18.jpg',
+      'photos/p1/微信图片_20260520085852_314_18.jpg'
+    ],
+    p2: [
+      'photos/p2/微信图片_20260520090024_330_18.jpg',
+      'photos/p2/微信图片_20260520090026_331_18.jpg',
+      'photos/p2/微信图片_20260520090030_332_18.jpg'
+    ],
+    p3: [
+      'photos/p3/微信图片_20260520085924_316_18.jpg',
+      'photos/p3/微信图片_20260520085927_317_18.jpg',
+      'photos/p3/微信图片_20260520085930_318_18.jpg',
+      'photos/p3/微信图片_20260520085935_319_18.jpg',
+      'photos/p3/微信图片_20260520085937_320_18.jpg',
+      'photos/p3/微信图片_20260520085940_321_18.jpg',
+      'photos/p3/微信图片_20260520085942_322_18.jpg',
+      'photos/p3/微信图片_20260520085945_323_18.jpg',
+      'photos/p3/微信图片_20260520085948_324_18.jpg',
+      'photos/p3/微信图片_20260520085949_325_18.jpg',
+      'photos/p3/微信图片_20260520085951_326_18.jpg',
+      'photos/p3/微信图片_20260520085953_327_18.jpg',
+      'photos/p3/微信图片_20260520085956_328_18.jpg'
+    ],
+    p4: [
+      'photos/p4/微信图片_20260520090114_334_18.jpg',
+      'photos/p4/微信图片_20260520090117_335_18.jpg',
+      'photos/p4/微信图片_20260520090123_336_18.jpg',
+      'photos/p4/微信图片_20260520090124_337_18.jpg',
+      'photos/p4/微信图片_20260520090126_338_18.jpg',
+      'photos/p4/微信图片_20260520090127_339_18.jpg',
+      'photos/p4/微信图片_20260520090129_340_18.jpg'
+    ]
+  };
+
+  var carouselStates = {};
+
+  function showSlide(index) {
+    if (index < 0 || index >= total) return;
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    // Stop carousel on previous slide
+    var prevSlide = slides[current];
+    stopCarousel(prevSlide);
+
+    // Hide current
+    slides[current].classList.remove('active');
+
+    // Show new
+    current = index;
+    slides[current].classList.add('active');
+
+    // Start carousel if needed
+    startCarousel(slides[current]);
+
+    setTimeout(function() {
+      isTransitioning = false;
+    }, 600);
+  }
+
+  function nextSlide() {
+    if (current < total - 1) {
+      showSlide(current + 1);
+    }
+  }
+
+  function stopCarousel(slide) {
+    var key = slide.getAttribute('data-photos');
+    if (key && carouselTimers[key]) {
+      clearInterval(carouselTimers[key]);
+      delete carouselTimers[key];
+    }
+  }
+
+  function startCarousel(slide) {
+    var key = slide.getAttribute('data-photos');
+    if (!key || !photoData[key]) return;
+
+    var photos = photoData[key];
+    var imgId = 'img' + slide.getAttribute('data-index');
+    var dotsId = 'dots' + slide.getAttribute('data-index');
+    var img = document.getElementById(imgId);
+    var dotsContainer = document.getElementById(dotsId);
+
+    if (!img || !dotsContainer) return;
+
+    // Initialize state
+    if (!carouselStates[key]) {
+      carouselStates[key] = 0;
+    }
+
+    // Build dots
+    dotsContainer.innerHTML = '';
+    for (var i = 0; i < photos.length; i++) {
+      var dot = document.createElement('span');
+      dot.className = 'part3-dot';
+      if (i === carouselStates[key]) dot.classList.add('active');
+      dotsContainer.appendChild(dot);
+    }
+
+    // Show current photo
+    img.style.opacity = '0';
+    img.src = photos[carouselStates[key]];
+    img.onload = function() {
+      img.style.opacity = '1';
+    };
+    // Fallback: if image is cached, onload might not fire
+    setTimeout(function() {
+      img.style.opacity = '1';
+    }, 100);
+
+    function updateDots() {
+      var dots = dotsContainer.querySelectorAll('.part3-dot');
+      for (var d = 0; d < dots.length; d++) {
+        dots[d].classList.remove('active');
+      }
+      if (dots[carouselStates[key]]) {
+        dots[carouselStates[key]].classList.add('active');
+      }
+    }
+
+    // Cycle photos
+    carouselTimers[key] = setInterval(function() {
+      carouselStates[key] = (carouselStates[key] + 1) % photos.length;
+      img.style.opacity = '0';
+      setTimeout(function() {
+        img.src = photos[carouselStates[key]];
+        img.onload = function() { img.style.opacity = '1'; };
+        setTimeout(function() { img.style.opacity = '1'; }, 100);
+      }, 400);
+      updateDots();
+    }, 3500);
+  }
+
+  // Click/tap to advance
+  document.getElementById('app').addEventListener('click', function(e) {
+    nextSlide();
+  });
+
+  // Touch swipe support
+  var touchStartY = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    var diff = touchStartY - e.changedTouches[0].clientY;
+    if (diff > 50) {
+      nextSlide();
+    }
+    if (diff < -50 && current > 0) {
+      showSlide(current - 1);
+    }
+  }, { passive: true });
+
+  // Keyboard support
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      nextSlide();
+    }
+    if ((e.key === 'ArrowLeft' || e.key === 'ArrowUp') && current > 0) {
+      e.preventDefault();
+      showSlide(current - 1);
+    }
+  });
+
+  // Create floating hearts for cover and ending
+  function createHearts(containerId) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    var hearts = ['&#10084;', '&#9825;', '&#128150;', '&#128151;', '&#128152;', '&#128153;', '&#128154;', '&#128155;', '&#128156;', '&#128157;', '&#128158;', '&#128159;'];
+    for (var i = 0; i < 20; i++) {
+      var heart = document.createElement('span');
+      heart.className = 'heart-float';
+      heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+      heart.style.left = Math.random() * 90 + '%';
+      heart.style.animationDuration = (Math.random() * 8 + 6) + 's';
+      heart.style.animationDelay = Math.random() * 8 + 's';
+      heart.style.fontSize = (Math.random() * 20 + 16) + 'px';
+      container.appendChild(heart);
+    }
+  }
+
+  createHearts('heartsContainer');
+  createHearts('endingHearts');
+
+  // Show first slide
+  slides[0].classList.add('active');
+})();
+</script>
+
+</body>
+</html>
