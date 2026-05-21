@@ -235,7 +235,8 @@ body {
 /* Part 4 - Checklist */
 .part4 {
   background: linear-gradient(180deg, #fdf5f0 0%, #fef8f5 100%);
-  padding: 40px 28px;
+  padding: 60px 28px 40px;
+  justify-content: flex-start;
 }
 
 .part4-title {
@@ -278,6 +279,8 @@ body {
 /* Part 5 - Final message */
 .part5 {
   background: linear-gradient(180deg, #fef5f0 0%, #fce8e0 40%, #fef5f0 100%);
+  justify-content: flex-start;
+  padding-top: 60px;
 }
 
 .part5-card {
@@ -367,14 +370,7 @@ body {
     <div class="cover-hint">&#9825; 点击任意处开始 &#9825;</div>
   </div>
 
-  <!-- Slide 1: Part 1 -->
-  <div class="slide part1" data-index="1">
-    <div class="part1-card">
-      <p>三百多天前，我们相遇、相知、相爱。<br>这一年的时光里，有你陪伴的每一天都闪闪发光。<br>从最初的悸动到如今的默契，<br>我们一起经历了太多美好的第一次。<br>感谢你出现在我的生命里，<br>让我知道被爱是什么样的感觉。<br>这一年很短，短到每一个瞬间都清晰如昨；<br>这一年很长，长到我已经无法想象没有你的日子。<br>一周年快乐，我的宝贝。</p>
-    </div>
-  </div>
-
-  <!-- Slide 2-8: Part 2 - Date memories -->
+  <!-- Slide 1-7: Part 2 - Date memories -->
   <div class="slide part2" data-index="2">
     <div class="part2-date">2025.5.26</div>
     <div class="part2-divider"></div>
@@ -611,6 +607,25 @@ body {
     }
   }
 
+  function loadAndShow(imgEl, src) {
+    var preloader = new Image();
+    preloader.onload = function() {
+      imgEl.style.opacity = '0';
+      imgEl.src = src;
+      // Force reflow so the browser registers opacity:0 before setting it back
+      imgEl.offsetHeight;
+      imgEl.style.opacity = '1';
+    };
+    preloader.src = src;
+    // Handle cached images (onload may not fire)
+    if (preloader.complete) {
+      imgEl.style.opacity = '0';
+      imgEl.src = src;
+      imgEl.offsetHeight;
+      imgEl.style.opacity = '1';
+    }
+  }
+
   function startCarousel(slide) {
     var key = slide.getAttribute('data-photos');
     if (!key || !photoData[key]) return;
@@ -637,16 +652,14 @@ body {
       dotsContainer.appendChild(dot);
     }
 
-    // Show current photo
+    // Show first photo immediately
     img.style.opacity = '0';
     img.src = photos[carouselStates[key]];
-    img.onload = function() {
+    if (img.complete) {
       img.style.opacity = '1';
-    };
-    // Fallback: if image is cached, onload might not fire
-    setTimeout(function() {
-      img.style.opacity = '1';
-    }, 100);
+    } else {
+      img.onload = function() { img.style.opacity = '1'; };
+    }
 
     function updateDots() {
       var dots = dotsContainer.querySelectorAll('.part3-dot');
@@ -658,15 +671,11 @@ body {
       }
     }
 
-    // Cycle photos
+    // Cycle photos: preload next, then fade
     carouselTimers[key] = setInterval(function() {
       carouselStates[key] = (carouselStates[key] + 1) % photos.length;
-      img.style.opacity = '0';
-      setTimeout(function() {
-        img.src = photos[carouselStates[key]];
-        img.onload = function() { img.style.opacity = '1'; };
-        setTimeout(function() { img.style.opacity = '1'; }, 100);
-      }, 400);
+      var nextSrc = photos[carouselStates[key]];
+      loadAndShow(img, nextSrc);
       updateDots();
     }, 3500);
   }
