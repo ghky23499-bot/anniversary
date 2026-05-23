@@ -125,7 +125,8 @@ body {
 }
 
 .part2 .part3-frame {
-  flex: 0 0 40vh;
+  flex: 0 0 auto;
+  max-height: 50vh;
   margin-top: 18px;
 }
 
@@ -538,8 +539,10 @@ body {
   var PRELOAD_AHEAD = 3;
 
   function fitFrame(img) {
-    if (img.naturalWidth > img.naturalHeight) {
-      img.classList.add('landscape');
+    var landscape = img.naturalWidth > img.naturalHeight;
+    var isPart2 = img.closest('.part2');
+    if (landscape) img.classList.add('landscape');
+    if (landscape || isPart2) {
       var frame = img.parentElement;
       var innerW = frame.clientWidth - 24;
       var imgH = innerW * (img.naturalHeight / img.naturalWidth);
