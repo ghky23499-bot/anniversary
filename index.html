@@ -554,9 +554,13 @@ body {
     }
   }
 
-  // Click/tap to advance
+  // Click top half = previous, bottom half = next
   app.addEventListener('click', function(e) {
-    nextSlide();
+    if (e.clientY < window.innerHeight / 2) {
+      if (current > 0) showSlide(current - 1);
+    } else {
+      nextSlide();
+    }
   });
 
   // Keyboard support
