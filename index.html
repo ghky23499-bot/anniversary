@@ -154,7 +154,7 @@ body {
 }
 
 .part3-frame {
-  flex: 0 0 63%;
+  flex: 0 0 63vh;
   width: 92%;
   max-width: 380px;
   background: #fff;
@@ -501,6 +501,16 @@ body {
   var isTransitioning = false;
   var PRELOAD_AHEAD = 3;
 
+  function fitFrame(img) {
+    if (img.naturalWidth > img.naturalHeight) {
+      img.classList.add('landscape');
+      var frame = img.parentElement;
+      var innerW = frame.clientWidth - 24;
+      var imgH = innerW * (img.naturalHeight / img.naturalWidth);
+      frame.style.flex = '0 0 ' + (imgH + 24) + 'px';
+    }
+  }
+
   function loadSlideImage(slide) {
     var img = slide.querySelector('img');
     if (!img) return;
@@ -509,11 +519,9 @@ body {
     img.setAttribute('data-loaded', '1');
     img.src = src;
     if (img.complete) {
-      if (img.naturalWidth > img.naturalHeight) img.classList.add('landscape');
+      fitFrame(img);
     } else {
-      img.onload = function() {
-        if (this.naturalWidth > this.naturalHeight) this.classList.add('landscape');
-      };
+      img.onload = function() { fitFrame(this); };
     }
   }
 
