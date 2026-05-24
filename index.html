@@ -125,7 +125,7 @@ body {
 }
 
 .part2 .part3-frame {
-  flex: 0 0 40vh;
+  flex: 0 0 auto;
   margin-top: 18px;
 }
 
@@ -538,11 +538,15 @@ body {
   var PRELOAD_AHEAD = 3;
 
   function fitFrame(img) {
+    var frame = img.parentElement;
+    var innerW = frame.clientWidth - 24;
+    var imgH = innerW * (img.naturalHeight / img.naturalWidth);
     if (img.naturalWidth > img.naturalHeight) {
       img.classList.add('landscape');
-      var frame = img.parentElement;
-      var innerW = frame.clientWidth - 24;
-      var imgH = innerW * (img.naturalHeight / img.naturalWidth);
+    }
+    if (img.closest('.part2')) {
+      frame.style.flex = '0 0 ' + (imgH + 24) + 'px';
+    } else if (img.naturalWidth > img.naturalHeight) {
       frame.style.flex = '0 0 ' + (imgH + 24) + 'px';
     }
   }
